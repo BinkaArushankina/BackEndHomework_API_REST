@@ -1,5 +1,4 @@
 package de.ait.timepad.controllers.events;
-
 import de.ait.timepad.models.Event;
 import de.ait.timepad.repositories.events.EventsRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static de.ait.timepad.models.Event.EventType.NOT_FOUND;
-import static org.junit.jupiter.api.Assertions.*;
+import static de.ait.timepad.models.Event.EventType.PARTY;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,8 +44,8 @@ class EventsControllerTest {
 
     @Test
     void getAllEvents() throws Exception{
-        eventsRepository.save(Event.builder().eventType(NOT_FOUND).build());
-        eventsRepository.save(Event.builder().eventType(NOT_FOUND).build());
+        eventsRepository.save(Event.builder().eventType(PARTY).build());
+        eventsRepository.save(Event.builder().eventType(PARTY).build());
 
         mockMvc.perform(get("/api/events"))
                 .andExpect(jsonPath("$.count", is(2)));

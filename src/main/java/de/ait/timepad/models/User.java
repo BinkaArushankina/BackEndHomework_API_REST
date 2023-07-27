@@ -1,27 +1,20 @@
 package de.ait.timepad.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-/**
- * 7/21/2023
- * REST API
- *
- * @author Marsel Sidikov (AIT TR)
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = "events")
 public class User {
 
     public enum Role {
         ADMIN,
-        USER
+        USER,
+        MANAGER
     }
 
     public enum State {

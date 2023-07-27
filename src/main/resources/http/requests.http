@@ -18,10 +18,95 @@ Content-Type: application/json
   "password": "qwerty008"
 }
 
-
 ### Получение всех пользователей
 
 GET localhost:8080/api/users
+
+### delete user
+
+DELETE localhost:8080/api/users/2
+
+### update Marsel
+
+PUT http://localhost:8080/api/users/1
+Content-Type: application/json
+
+{
+  "newRole" : "MANAGER",
+  "newState" : "BANNED"
+}
+
+### update Alisher
+
+PUT http://localhost:8080/api/users/2
+Content-Type: application/json
+
+{
+  "newRole" : "ADMIN",
+  "newState" : "BANNED"
+}
+
+### get Marsel
+
+GET http://localhost:8080/api/users/1
+
+
+
+
+
+
+
+### add Event1
+
+POST http://localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name": "Party"
+}
+
+### add Event2
+
+POST http://localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name": "Party"
+}
+
+###getAllEvents
+
+GET localhost:8080/api/events
+
+
+### delete event
+
+DELETE localhost:8080/api/events/1
+
+### update event
+
+PUT http://localhost:8080/api/events/2
+Content-Type: application/json
+
+{
+  "newEventType" : "PARTY",
+  "newState" : "IGNORED"
+}
+
+### bad update event
+
+PUT http://localhost:8080/api/events/1
+Content-Type: application/json
+
+{
+  "newEventType" : "CONCERT",
+  "newState" : "IGNORED"
+}
+
+
+### get event
+
+GET http://localhost:8080/api/events/2
 
 
 

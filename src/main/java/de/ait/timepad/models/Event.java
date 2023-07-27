@@ -5,13 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 7/21/2023
- * REST API
- *
- * @author Marsel Sidikov (AIT TR)
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,13 +12,22 @@ import lombok.NoArgsConstructor;
 public class Event {
 
     public enum EventType {
-        LOG_IN,
-        SIGN_IN,
-        SIGN_OUT,
-        NOT_FOUND
+        PARTY,
+        CONCERT
+    }
+
+    public enum State {
+        NOT_CONFIRMED,
+        CONFIRMED,
+        IGNORED,
+        DELETED
     }
 
     private String name;
+
+    private Long id;
+
+    private State state;
 
     private EventType eventType;
 }
