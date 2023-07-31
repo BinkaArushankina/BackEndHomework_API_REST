@@ -1,7 +1,7 @@
-package de.ait.timepad.controllers.events;
-import de.ait.timepad.models.Event;
+package de.ait.timepad.controllers.articles;
+
 import de.ait.timepad.models.User;
-import de.ait.timepad.repositories.events.EventsRepository;
+import de.ait.timepad.repositories.articles.ArticlesRepository;
 import de.ait.timepad.repositories.users.UsersRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,51 +10,54 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.is;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@DisplayName("EventsController is works: ")
+@DisplayName("ArticlesController is works: ")
 @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-class EventsControllerTest {
+
+public class ArticlesControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private EventsRepository eventsRepository;
-
-    @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private ArticlesRepository articlesRepository;
+
     @BeforeEach
-    public void setUp(){
-        eventsRepository.clear();
+    public void setUp() {
+        articlesRepository.clear();
         usersRepository.clear();
     }
 
     @Nested
-    @DisplayName("POST /api/events is works: ")
-    class AddEventTest {
+    @DisplayName("POST /api/articles is works: ")
+    class AddArticleTest {
 
         @Test
-        public void add_event_for_exist_user() throws Exception {
+        public void add_article_for_exist_user() throws Exception {
             usersRepository.save(User.builder().email("test@mail.com")
-                    .events(new ArrayList<>())
+                    .articles(new ArrayList<>())
                     .state(User.State.NOT_CONFIRMED).role(User.Role.USER).build());
 
-            mockMvc.perform(post("/api/events")
+            mockMvc.perform(post("/api/articles")
                             .header("Content-Type", "application/json")
                             .content("{\n" +
-                                    "  \"name\": \"Party\",\n" +
+                                    "  \"text\": \"Test Article\",\n" +
                                     "  \"aboutUserId\": 1,\n" +
                                     "  \"publishDate\": \"2022-02-02\"\n" +
                                     "}"))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id", is(1)))
+                    .andExpect(jsonPath("$.text", is("Test Article")))
                     .andExpect(jsonPath("$.publishDate", is("2022-02-02")))
                     .andExpect(jsonPath("$.about.id", is(1)))
                     .andExpect(jsonPath("$.about.email", is("test@mail.com")));
@@ -62,17 +65,14 @@ class EventsControllerTest {
         }
 
         @Test
-        public void add_event_for_not_exist_user() throws Exception {
-            mockMvc.perform(post("/api/events")
+        public void add_article_for_not_exist_user() throws Exception {
+            mockMvc.perform(post("/api/articles")
                             .header("Content-Type", "application/json")
                             .content("{\n" +
-                                    "  \"name\": \"Party\",\n" +
-                                    "  \"aboutUserId\": 1,\n" +
+                                    "  \"text\": \"Test Article\",\n" +
+                                    "  \"aboutUserId\": 1\n" +
                                     "}"))
                     .andExpect(status().isBadRequest());
         }
     }
-
-
-
 }

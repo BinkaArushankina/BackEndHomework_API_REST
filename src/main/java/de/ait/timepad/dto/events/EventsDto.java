@@ -12,9 +12,9 @@ import java.util.List;
 @Schema(description = "event's List")
 public class EventsDto {
 
-    @Schema(description = "system event")
+    @Schema(description = "list of events")
     private List<EventDto> events;
 
-    @Schema(description = "total number of event", example = "1")
+    @Schema(description = "total number of event", example = "2")
     private Integer count;
 }

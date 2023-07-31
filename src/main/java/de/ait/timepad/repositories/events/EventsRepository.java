@@ -1,20 +1,14 @@
 package de.ait.timepad.repositories.events;
 import de.ait.timepad.models.Event;
+import de.ait.timepad.repositories.CrudRepository;
+
 import java.util.List;
-import java.util.Optional;
 
-public interface EventsRepository {
-    void save(Event event);
-
-    List<Event> findAll();
-
-    Optional<Event> findById(Long id);
-
-
-    void delete(Event event);
-
+public interface EventsRepository extends CrudRepository<Event> {
 
     // TODO: delete the method as soon as we connect the databases
     void clear();
+
+    List<Event> findAllByDate(Integer year, Integer month, Integer day );
 
 }

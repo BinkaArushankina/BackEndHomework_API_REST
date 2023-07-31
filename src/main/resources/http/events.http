@@ -1,0 +1,83 @@
+### add event1 for Marsel
+
+POST localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name" : "Party",
+  "aboutUserId" : 1,
+  "publishDate": "2022-02-02"
+}
+
+
+### add event2 for Marsel
+
+POST localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name" : "Party",
+  "aboutUserId" : 1,
+  "publishDate": "2022-02-02"
+}
+
+
+### add event3 for Marsel
+
+POST localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name" : "Party",
+  "aboutUserId" : 1,
+  "publishDate": "2022-02-02"
+}
+
+
+### add event4 for Marsel
+
+POST localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name" : "Party",
+  "aboutUserId" : 1,
+  "publishDate": "2022-02-02"
+}
+
+
+### add event for Alisher
+
+POST localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "name" : "Party",
+  "aboutUserId" : 2,
+  "publishDate": "2022-02-02"
+}
+
+
+### delete event for Marsel
+
+DELETE localhost:8080/api/events/1
+
+
+### get all events for Marsel
+
+GET localhost:8080/api/users/1/events
+
+
+### get all events for Alisher
+
+GET localhost:8080/api/users/2/events
+
+
+### get all events for the PublishDate
+
+GET localhost:8080/api/events?year=2021&month=1
+
+
+
+
+

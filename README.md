@@ -148,3 +148,27 @@ GET /events/{event-id}
 
 - Данные event
 ```
+
+- Добавить статью о пользователе
+- Добавить event о пользователе
+- Получить все статьи определенного пользователя
+- Получить все events определенного пользователя
+
+- Получить все статьи по определенным датам:
+- Получить все events по определенным датам:
+
+```
+GET /api/articles получить все статьи
+GET /api/articles?year=2022 получить статьи за 2022-год
+GET /api/articles?year=2022&month=2 получить все статьи за 2022-й год за февраль
+```
+
+```
+GET /api/events получить все events
+GET /api/events?year=2022 получить events за 2022-год
+GET /api/events?year=2022&month=2 получить все events за 2022-й год за февраль
+```
+
+- Validation for user: email field cannot be null, empty or not blank. 
+- Password field - min 7, max 20 characters. 
+- Validation for all events and articles fields are required cannot be null, empty or not blank. 

@@ -1,21 +1,10 @@
 package de.ait.timepad.repositories.users;
 
 import de.ait.timepad.models.User;
-
-import java.util.List;
-import java.util.Optional;
-
-public interface UsersRepository {
-
-    void save(User user);
-
-    List<User> findAll();
+import de.ait.timepad.repositories.CrudRepository;
 
 
-    Optional<User> findById(Long id);
-
-
-    void delete(User user);
+public interface UsersRepository extends CrudRepository<User> {
 
 
     // TODO: delete the method as soon as we connect the databases

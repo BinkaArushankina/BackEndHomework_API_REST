@@ -14,4 +14,8 @@ public interface EventsService {
     EventDto updateEvent(Long eventId, UpdateEventDto updateEvent);
 
     EventDto getEvent(Long eventId);
+
+    EventDto addUserEvent(NewEventDto newEvent);
+
+    EventsDto getEvents(Integer year, Integer month, Integer day);
 }

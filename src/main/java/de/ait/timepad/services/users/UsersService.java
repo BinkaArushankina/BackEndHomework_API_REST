@@ -1,5 +1,7 @@
 package de.ait.timepad.services.users;
 
+import de.ait.timepad.dto.articles.ArticlesDto;
+import de.ait.timepad.dto.events.EventsDto;
 import de.ait.timepad.dto.users.NewUserDto;
 import de.ait.timepad.dto.users.UpdateUserDto;
 import de.ait.timepad.dto.users.UserDto;
@@ -15,4 +17,8 @@ public interface UsersService {
     UserDto updateUser(Long userId, UpdateUserDto updateUser);
 
     UserDto getUser(Long userId);
+
+    ArticlesDto getArticlesOfUser(Long userId);
+
+    EventsDto getEventsOfUser(Long userId);
 }

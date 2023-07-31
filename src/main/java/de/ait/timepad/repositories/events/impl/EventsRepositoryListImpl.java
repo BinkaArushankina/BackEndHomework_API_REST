@@ -2,9 +2,12 @@ package de.ait.timepad.repositories.events.impl;
 import de.ait.timepad.models.Event;
 import de.ait.timepad.repositories.events.EventsRepository;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class EventsRepositoryListImpl implements EventsRepository {
@@ -44,6 +47,22 @@ public class EventsRepositoryListImpl implements EventsRepository {
     @Override
     public void clear() {
         events.clear();
+    }
+
+    @Override
+    public List<Event> findAllByDate(Integer year, Integer month, Integer day) {
+        if (year != null && month == null && day == null) {
+            return events.stream().filter(event -> event.getPublishDate().getYear() == year).collect(Collectors.toList());
+        } else if (year != null && month != null && day == null) {
+            return events.stream().filter(event ->
+                    event.getPublishDate().getYear() == year && event.getPublishDate()
+                            .getMonth().getValue() == month).collect(Collectors.toList());
+        } else {
+            return events.stream().filter(event-> {
+                LocalDate date = LocalDate.of(year, month, day);
+                return event.getPublishDate().equals(date);
+            }).collect(Collectors.toList());
+        }
     }
 
 

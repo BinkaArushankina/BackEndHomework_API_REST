@@ -1,5 +1,7 @@
 package de.ait.timepad.services.users.impl;
 
+import de.ait.timepad.dto.articles.ArticlesDto;
+import de.ait.timepad.dto.events.EventsDto;
 import de.ait.timepad.dto.users.NewUserDto;
 import de.ait.timepad.dto.users.UpdateUserDto;
 import de.ait.timepad.dto.users.UserDto;
@@ -12,11 +14,12 @@ import de.ait.timepad.services.users.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import static de.ait.timepad.dto.users.UserDto.from;
+import static de.ait.timepad.dto.articles.ArticleDto.from;
+import static de.ait.timepad.dto.events.EventDto.from;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +33,8 @@ public class UsersServiceImpl implements UsersService {
                 .email(newUser.getEmail())
                 .password(newUser.getPassword())
                 .role(User.Role.USER)
+                .articles(new ArrayList<>())//dobawlaem pustie listi pered dobawleniem
+                .events(new ArrayList<>())
                 .state(User.State.NOT_CONFIRMED).build();
 
         usersRepository.save(user);
@@ -92,6 +97,28 @@ public class UsersServiceImpl implements UsersService {
     public UserDto getUser(Long userId) {
         return from(getUserOrThrow(userId));
     }
+
+
+    @Override
+    public ArticlesDto getArticlesOfUser(Long userId) {
+        User user = getUserOrThrow(userId);
+
+        return ArticlesDto.builder()
+                .articles(from(user.getArticles()))
+                .count(user.getArticles().size())
+                .build();
+    }
+
+    @Override
+    public EventsDto getEventsOfUser(Long userId) {
+        User user = getUserOrThrow(userId);//is repo usera witaschili
+
+        return EventsDto.builder()
+                .events(from(user.getEvents()))//wernuli spisok ego eventow
+                .count(user.getEvents().size())
+                .build();
+    }
+
 
     private User getUserOrThrow(Long userId) {
         return  usersRepository.findById(userId).orElseThrow(

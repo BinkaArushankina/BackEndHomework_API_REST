@@ -4,12 +4,18 @@ import de.ait.timepad.dto.events.EventsDto;
 import de.ait.timepad.dto.events.NewEventDto;
 import de.ait.timepad.dto.events.UpdateEventDto;
 import de.ait.timepad.exceptions.ForbiddenOperationException;
+import de.ait.timepad.exceptions.IncorrectUserIdException;
 import de.ait.timepad.exceptions.NotFoundException;
 import de.ait.timepad.models.Event;
+import de.ait.timepad.models.User;
 import de.ait.timepad.repositories.events.EventsRepository;
+import de.ait.timepad.repositories.users.UsersRepository;
 import de.ait.timepad.services.events.EventsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import static de.ait.timepad.dto.events.EventDto.from;
 
@@ -18,6 +24,7 @@ import static de.ait.timepad.dto.events.EventDto.from;
 public class EventsServiceImpl implements EventsService {
 
     private final EventsRepository eventsRepository;
+    private final UsersRepository usersRepository;
 
     @Override
     public EventDto addEvent(NewEventDto newEvent) {
@@ -88,7 +95,42 @@ public class EventsServiceImpl implements EventsService {
         return EventDto.from(getEventOrThrow(eventId));
     }
 
+    @Override
+    public EventDto addUserEvent(NewEventDto newEvent) {
+        User user = usersRepository.findById(newEvent.getAboutUserId())
+                .orElseThrow(() ->
+                        new IncorrectUserIdException("Id < " + newEvent.getAboutUserId() + " > is not correct"));
+        Event event = Event.builder()
+                .name(newEvent.getName())
+                .eventType(Event.EventType.PARTY)
+                .about(user)
+                .publishDate(LocalDate.parse(newEvent.getPublishDate()))
+                .build();
 
+        user.getEvents().add(event);//useru dobawili event
+
+        eventsRepository.save(event);//objasatelno sochranaem etot event
+
+        return from(event);//woswraschaem EventDto
+    }
+
+    @Override
+    public EventsDto getEvents(Integer year, Integer month, Integer day) {
+        if (isCorrect(year, month, day)) {
+            List<Event> events = eventsRepository.findAllByDate(year, month, day);
+            return EventsDto.builder()
+                    .events(EventDto.from(events))
+                    .count(events.size())
+                    .build();
+        } else throw new IllegalArgumentException("Неверный формат даты");
+    }
+
+    private boolean isCorrect(Integer year, Integer month, Integer day) {
+        return year == null && month == null && day == null ||
+                year != null && month == null && day == null ||
+                year != null && month != null && day == null ||
+                year != null && month != null && day != null;
+    }
 
     private Event getEventOrThrow(Long eventId) {
         return  eventsRepository.findById(eventId).orElseThrow(

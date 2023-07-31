@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,11 +25,15 @@ public class Event {
         DELETED
     }
 
-    private String name;
-
     private Long id;
+
+    private String name;
 
     private State state;
 
     private EventType eventType;
+
+    private User about;
+
+    private LocalDate publishDate;
 }

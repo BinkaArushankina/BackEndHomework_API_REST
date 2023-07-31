@@ -1,5 +1,4 @@
 package de.ait.timepad.controllers.api;
-
 import de.ait.timepad.dto.events.EventDto;
 import de.ait.timepad.dto.events.EventsDto;
 import de.ait.timepad.dto.events.NewEventDto;
@@ -14,25 +13,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Tags(value = {
         @Tag(name = "Events")
 })
 @RequestMapping("/api/events")
 public interface EventsApi {
-
-    @Operation(summary = "created event", description = "only for admin")
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    EventDto addEvent(@Parameter(required= true, description = "event") @RequestBody NewEventDto newEvent);
-
-
-    @Operation(summary = "get all events", description = "for all")
-    @GetMapping
-    EventsDto getAllEvents();
-
-
 
     @Operation(summary = "delete event", description = "for admin")
     @ApiResponses(value = {
@@ -84,6 +74,42 @@ public interface EventsApi {
     @GetMapping("/{event-id}")
     EventDto getEvent(@Parameter(required = true, description = "event's id", example = "2")
                     @PathVariable("event-id") Long eventId);
+
+
+
+
+
+
+    @Operation(summary = "created user events", description = "only for admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "422", description = "users id not exist",
+                    content = {
+                            @Content()//wernem s pustim kontentom
+                    }),
+            @ApiResponse(responseCode = "201", description = "added event",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EventDto.class))
+                    })
+    })
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    ResponseEntity<EventDto> addUserEvent(@Parameter(required= true, description = "event") @RequestBody @Valid NewEventDto newEvent);
+
+
+
+    @Operation(summary = "Получение всех event", description = "Доступно всем пользователям")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список статей",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EventsDto.class))
+                    })
+    })
+    @GetMapping
+    EventsDto getEvents(@Parameter(description = "Год", example = "2022") @RequestParam(value = "year", required = false) Integer year,
+                            @Parameter(description = "Месяц", example = "2") @RequestParam(value = "month", required = false) Integer month,
+                            @Parameter(description = "День", example = "2") @RequestParam(value = "day", required = false) Integer day);
+
+
 }
 
 
