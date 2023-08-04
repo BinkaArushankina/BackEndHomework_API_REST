@@ -1,5 +1,6 @@
 package de.ait.timepad.dto.users;
 
+import de.ait.timepad.validation.constraints.NotWeakPassword;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -21,5 +22,6 @@ public class NewUserDto {
     @Schema(description = "User's password", example = "qwerty007")
     @NotBlank
     @Size(min = 7, max = 20)
+    @NotWeakPassword
     private String password;
 }
