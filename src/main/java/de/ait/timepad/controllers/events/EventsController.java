@@ -16,23 +16,20 @@ public class EventsController implements EventsApi {
 
     private final EventsService eventsService;
 
-
     @Override
-    public EventDto deleteEvent(Long eventId) {
-        return eventsService.deleteEvent(eventId);
+    public ResponseEntity<EventDto> deleteEvent(Long eventId) {
+        return ResponseEntity.ok(eventsService.deleteEvent(eventId));
     }
 
     @Override
-    public EventDto updateEvent(Long eventId, UpdateEventDto updateEvent) {
-        return eventsService.updateEvent(eventId, updateEvent);
+    public ResponseEntity<EventDto> updateEvent(Long eventId, UpdateEventDto updateEvent) {
+        return ResponseEntity.ok(eventsService.updateEvent(eventId, updateEvent));
     }
 
     @Override
-    public EventDto getEvent(Long eventId) {
-        return eventsService.getEvent(eventId);
+    public ResponseEntity<EventDto> getEvent(Long eventId) {
+        return ResponseEntity.ok(eventsService.getEvent(eventId));
     }
-
-
 
 
     @Override
@@ -42,9 +39,5 @@ public class EventsController implements EventsApi {
                 .body(eventsService.addUserEvent(newEvent));
     }
 
-    @Override
-    public EventsDto getEvents(Integer year, Integer month, Integer day) {
-        return eventsService.getEvents(year,month,day);
-    }
 
 }

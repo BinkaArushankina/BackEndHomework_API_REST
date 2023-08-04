@@ -37,29 +37,11 @@ public class ArticlesServiceImpl implements ArticlesService {
                 .publishDate(LocalDate.parse(newArticle.getPublishDate()))
                 .build();
 
-        user.getArticles().add(article);
-
         articlesRepository.save(article);
 
         return from(article);
     }
 
-    @Override
-    public ArticlesDto getArticles(Integer year, Integer month, Integer day) {
-        if (isCorrect(year, month, day)) {
-            List<Article> articles = articlesRepository.findAllByDate(year, month, day);
-            return ArticlesDto.builder()
-                    .articles(from(articles))
-                    .count(articles.size())
-                    .build();
-        } else throw new IllegalArgumentException("Неверный формат даты");
-    }
 
-    private boolean isCorrect(Integer year, Integer month, Integer day) {
-        return year == null && month == null && day == null ||
-                year != null && month == null && day == null ||
-                year != null && month != null && day == null ||
-                year != null && month != null && day != null;
-    }
 
 }

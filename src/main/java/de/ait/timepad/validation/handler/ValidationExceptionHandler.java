@@ -2,54 +2,47 @@ package de.ait.timepad.validation.handler;
 
 import de.ait.timepad.validation.dto.ValidationErrorDto;
 import de.ait.timepad.validation.dto.ValidationErrorsDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@ControllerAdvice//rabota so wsemi controllerami i ich otsleschiwatj
+@ControllerAdvice//rabota so wsemi controllerami i ich otsleschiwatj,wmesto 400 mi petschataem message, eto perechwat oschibki
 public class ValidationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorsDto> handleException(MethodArgumentNotValidException exception){//exc infa o wsech oschibkach w moment saprosa newUserDto
-        //System.out.println(exception.getMessage());//wmesto 400 mi petschataem message, eto perechwat oschibki
+        //sobiraem spisok wsech oschibok w json wide
+        List<ValidationErrorDto> validationErrors = exception
+                .getBindingResult()//polutschaem resultati validazii
+                .getAllErrors()//polutaschaem wse oschibki validazii
+                .stream()//beschim  po wsem oschibkam
+                .filter(error -> error instanceof FieldError)//wibrali tolko field error
+                .map(error -> (FieldError)error)//sdelali preobrasowanie
+                .map(error -> {//soiraem infu ob oschibke w formate json
+                    ValidationErrorDto errorDto = ValidationErrorDto.builder()
+                            .field(error.getField())
+                            .message(error.getDefaultMessage())
+                            .build();
 
-        List<ValidationErrorDto> validationErrors = new ArrayList<>();
+                    if(error.getRejectedValue() != null) {//esli polsowatel wwel snatschenie kotoroe ne nrawitsa validatoru
+                        errorDto.setRejectedValue(errorDto.getRejectedValue().toString());//to dobawim snatschenie w otwet
+                    }
 
-        BindingResult bindingResult = exception.getBindingResult(); //result validazii
-        List<ObjectError> errorList = bindingResult.getAllErrors();//spisok error validazii
-        //probeschim po wsem oschibkam i petschataem
-        for (ObjectError error : errorList){
-            FieldError fieldError = (FieldError)error;//konkretnoe pole pokaschet gde oschibka
+                    return errorDto;
 
-            //Json dlja klienta s odnoj oschikoj
-            ValidationErrorDto errorDto = ValidationErrorDto.builder()
-                    .field(fieldError.getField())
-                    .message(error.getDefaultMessage())
-                    //.rejectedValue(fieldError.getRejectedValue().toString())
-                    .build();
+                })
+                .collect(Collectors.toList());
 
-            validationErrors.add(errorDto);//kladem oschiku w spisok i teper klientu goworim s kakim polem proisoschla oschibka
-        }
-
-        //podgotowili tela otweta
-        ValidationErrorsDto body = ValidationErrorsDto.builder()
+        //podgotowili i srasu wernuli, tela otweta, resultat obrabotki oschibki so statusom 400
+        return ResponseEntity//sosdali otwet
+                .badRequest()
+                .body(ValidationErrorsDto.builder()
                 .errors(validationErrors)
-                .build();//oschibok moschet bitj mnogo wot spisok oschibok kotorie wosnikli
-
-        //sosdali otwet
-        ResponseEntity<ValidationErrorsDto> response = new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-        //wernuli otwet
-        return response;
-
-        //System.out.println(fieldError.getField() + " " + error.getDefaultMessage() + "bad value" + fieldError.getRejectedValue());
-
+                .build());//oschibok moschet bitj mnogo wot spisok oschibok kotorie wosnikli
     }
 }

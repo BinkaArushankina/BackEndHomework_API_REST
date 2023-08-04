@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,15 +22,20 @@ import java.util.stream.Collectors;
 public class ArticleDto {
 
     @Schema(description = "Идентификатор статьи", example = "1")
+    @NotNull
     private Long id;
 
     @Schema(description = "Текст статьи", example = "Текст о каком-либо пользователе...")
+    @NotNull
+    @NotBlank
     private String text;
 
     @Schema(description = "Пользователь, которому посвящена статья")
     private UserInArticleDto about;
 
     @Schema(description = "Дата публикации в формате YYYY-MM-DD", example = "2022-02-02")
+    @NotNull
+    @NotBlank
     private String publishDate;
 
     public static ArticleDto from(Article article) {
@@ -37,9 +44,6 @@ public class ArticleDto {
                 .text(article.getText())
                 .build();
 
-        if (article.getAbout() != null) {
-            result.setAbout(UserInArticleDto.from(article.getAbout()));
-        }
 
         if (article.getPublishDate() != null) {
             result.setPublishDate(article.getPublishDate().toString());

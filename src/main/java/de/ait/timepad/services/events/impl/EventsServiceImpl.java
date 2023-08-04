@@ -107,30 +107,12 @@ public class EventsServiceImpl implements EventsService {
                 .publishDate(LocalDate.parse(newEvent.getPublishDate()))
                 .build();
 
-        user.getEvents().add(event);//useru dobawili event
-
         eventsRepository.save(event);//objasatelno sochranaem etot event
 
         return from(event);//woswraschaem EventDto
     }
 
-    @Override
-    public EventsDto getEvents(Integer year, Integer month, Integer day) {
-        if (isCorrect(year, month, day)) {
-            List<Event> events = eventsRepository.findAllByDate(year, month, day);
-            return EventsDto.builder()
-                    .events(EventDto.from(events))
-                    .count(events.size())
-                    .build();
-        } else throw new IllegalArgumentException("Неверный формат даты");
-    }
 
-    private boolean isCorrect(Integer year, Integer month, Integer day) {
-        return year == null && month == null && day == null ||
-                year != null && month == null && day == null ||
-                year != null && month != null && day == null ||
-                year != null && month != null && day != null;
-    }
 
     private Event getEventOrThrow(Long eventId) {
         return  eventsRepository.findById(eventId).orElseThrow(

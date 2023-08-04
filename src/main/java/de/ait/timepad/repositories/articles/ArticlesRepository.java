@@ -1,15 +1,8 @@
 package de.ait.timepad.repositories.articles;
 
 import de.ait.timepad.models.Article;
-import de.ait.timepad.repositories.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface ArticlesRepository extends CrudRepository<Article> {
-
-    // TODO: убрать метод, как только подключим базы данных
-    void clear();
-
-    List<Article> findAllByDate(Integer year, Integer month, Integer day);
+public interface ArticlesRepository extends JpaRepository<Article, Long> {
 
 }

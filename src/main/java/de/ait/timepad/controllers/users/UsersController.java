@@ -27,34 +27,34 @@ public class UsersController implements UsersApi {
     }
 
     @Override
-    public UsersDto getAllUsers() {
-        return usersService.getAllUsers();
+    public ResponseEntity<UsersDto> getAllUsers() {
+        return ResponseEntity.ok(usersService.getAllUsers());
     }
 
     @Override
-    public UserDto deleteUser(Long userId) {
-        return usersService.deleteUser(userId);
+    public ResponseEntity<UserDto> deleteUser(Long userId) {
+        return ResponseEntity.ok(usersService.deleteUser(userId));
     }
 
     @Override
-    public UserDto updateUser(Long userId, UpdateUserDto updateUser) {
-        return usersService.updateUser(userId, updateUser);
+    public ResponseEntity<UserDto> updateUser(Long userId, UpdateUserDto updateUser) {
+        return ResponseEntity.ok(usersService.updateUser(userId, updateUser));
     }
 
     @Override
-    public UserDto getUser(Long userId) {
-        return usersService.getUser(userId);
+    public ResponseEntity<UserDto> getUser(Long userId) {
+        return ResponseEntity.ok(usersService.getUser(userId));
     }
 
 
     @Override
-    public ArticlesDto getArticlesOfUser(Long userId) {
-        return usersService.getArticlesOfUser(userId);
+    public ResponseEntity<ArticlesDto> getArticlesOfUser(Long userId) {
+        return ResponseEntity.ok(usersService.getArticlesOfUser(userId));
     }
 
     @Override
-    public EventsDto getEventsOfUser(Long userId) {
-        return usersService.getEventsOfUser(userId);
+    public ResponseEntity<EventsDto> getEventsOfUser(Long userId) {
+        return ResponseEntity.ok(usersService.getEventsOfUser(userId));
     }
 
 }

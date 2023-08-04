@@ -32,11 +32,7 @@ public class ArticlesControllerTests {
     @Autowired
     private ArticlesRepository articlesRepository;
 
-    @BeforeEach
-    public void setUp() {
-        articlesRepository.clear();
-        usersRepository.clear();
-    }
+
 
     @Nested
     @DisplayName("POST /api/articles is works: ")

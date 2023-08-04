@@ -36,7 +36,7 @@ public interface EventsApi {
                     })
     })
     @DeleteMapping("/{event-id}")
-    EventDto deleteEvent(@Parameter(required = true, description = "event's id", example = "2")//dokumentazia
+    ResponseEntity<EventDto> deleteEvent(@Parameter(required = true, description = "event's id", example = "2")//dokumentazia
                        @PathVariable("event-id") Long eventId);//springowskaja annotazia
 
 
@@ -53,7 +53,7 @@ public interface EventsApi {
                     })
     })
     @PutMapping("/{event-id}")
-    EventDto updateEvent(@Parameter(required = true, description = "event's id", example = "2")
+    ResponseEntity<EventDto> updateEvent(@Parameter(required = true, description = "event's id", example = "2")
                        @PathVariable("event-id") Long eventId,
                        @RequestBody UpdateEventDto updateEvent);
 
@@ -72,7 +72,7 @@ public interface EventsApi {
                     })
     })
     @GetMapping("/{event-id}")
-    EventDto getEvent(@Parameter(required = true, description = "event's id", example = "2")
+    ResponseEntity<EventDto> getEvent(@Parameter(required = true, description = "event's id", example = "2")
                     @PathVariable("event-id") Long eventId);
 
 
@@ -95,19 +95,6 @@ public interface EventsApi {
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EventDto> addUserEvent(@Parameter(required= true, description = "event") @RequestBody @Valid NewEventDto newEvent);
 
-
-
-    @Operation(summary = "Получение всех event", description = "Доступно всем пользователям")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Список статей",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EventsDto.class))
-                    })
-    })
-    @GetMapping
-    EventsDto getEvents(@Parameter(description = "Год", example = "2022") @RequestParam(value = "year", required = false) Integer year,
-                            @Parameter(description = "Месяц", example = "2") @RequestParam(value = "month", required = false) Integer month,
-                            @Parameter(description = "День", example = "2") @RequestParam(value = "day", required = false) Integer day);
 
 
 }

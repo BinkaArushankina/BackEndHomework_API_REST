@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Event {
 
     public enum EventType {
@@ -25,6 +27,8 @@ public class Event {
         DELETED
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -33,6 +37,8 @@ public class Event {
 
     private EventType eventType;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
     private User about;
 
     private LocalDate publishDate;

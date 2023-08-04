@@ -8,6 +8,4 @@ public interface ArticlesService {
 
     ArticleDto addArticle(NewArticleDto newArticle);
 
-    ArticlesDto getArticles(Integer year, Integer month, Integer day);
-
 }

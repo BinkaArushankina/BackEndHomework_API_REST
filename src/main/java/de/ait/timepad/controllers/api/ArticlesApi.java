@@ -38,16 +38,5 @@ public interface ArticlesApi {
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<ArticleDto> addArticle(@RequestBody @Valid NewArticleDto newArticle);
 
-    @Operation(summary = "Получение всех статей", description = "Доступно только всем пользователям")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Список статей",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ArticlesDto.class))
-                    })
-    })
-    @GetMapping
-    ArticlesDto getArticles(@Parameter(description = "Год", example = "2022") @RequestParam(value = "year", required = false) Integer year,
-                            @Parameter(description = "Месяц", example = "2") @RequestParam(value = "month", required = false) Integer month,
-                            @Parameter(description = "День", example = "2") @RequestParam(value = "day", required = false) Integer day);
 
 }

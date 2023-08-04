@@ -17,5 +17,5 @@ public interface EventsService {
 
     EventDto addUserEvent(NewEventDto newEvent);
 
-    EventsDto getEvents(Integer year, Integer month, Integer day);
+
 }

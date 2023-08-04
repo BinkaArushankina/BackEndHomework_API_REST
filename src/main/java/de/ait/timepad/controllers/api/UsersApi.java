@@ -5,6 +5,7 @@ import de.ait.timepad.dto.users.NewUserDto;
 import de.ait.timepad.dto.users.UpdateUserDto;
 import de.ait.timepad.dto.users.UserDto;
 import de.ait.timepad.dto.users.UsersDto;
+import de.ait.timepad.validation.dto.ValidationErrorsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,14 +27,20 @@ import javax.validation.Valid;
 public interface UsersApi {
 
     @Operation(summary = "created user", description = "only for admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "created user",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))
+                    }),
+            @ApiResponse(responseCode = "400", description = "validation error",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationErrorsDto.class))
+                    })
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<UserDto> addUser(@Parameter(required= true, description = "user") @RequestBody @Valid NewUserDto newUser);
 
-
-    @Operation(summary = "get all user", description = "for all")
-    @GetMapping
-    UsersDto getAllUsers();
 
 
     @Operation(summary = "delete user", description = "for admin")
@@ -48,7 +55,7 @@ public interface UsersApi {
          })
     })
     @DeleteMapping("/{user-id}")
-    UserDto deleteUser(@Parameter(required = true, description = "user's id", example = "2")//dokumentazia
+    ResponseEntity<UserDto> deleteUser(@Parameter(required = true, description = "user's id", example = "2")//dokumentazia
                        @PathVariable("user-id") Long userId);//springowskaja annotazia
 
 
@@ -69,7 +76,7 @@ public interface UsersApi {
                     })
     })
     @PutMapping("/{user-id}")
-    UserDto updateUser(@Parameter(required = true, description = "user's id", example = "2")//dokumentazia
+    ResponseEntity<UserDto> updateUser(@Parameter(required = true, description = "user's id", example = "2")//dokumentazia
                        @PathVariable("user-id") Long userId,//springowskaja annotazia
                        @RequestBody UpdateUserDto updateUser);
 
@@ -88,7 +95,7 @@ public interface UsersApi {
                     })
     })
     @GetMapping("/{user-id}")
-    UserDto getUser(@Parameter(required = true, description = "user's id", example = "2")//dokumentazia
+    ResponseEntity<UserDto> getUser(@Parameter(required = true, description = "user's id", example = "2")//dokumentazia
                        @PathVariable("user-id") Long userId);//springowskaja annotazia
 
 
@@ -105,7 +112,7 @@ public interface UsersApi {
                     })
     })
     @GetMapping("/{user-id}/articles")
-    ArticlesDto getArticlesOfUser(@Parameter(required = true, description = "Идентификатор пользователя", example = "2")
+    ResponseEntity<ArticlesDto> getArticlesOfUser(@Parameter(required = true, description = "Идентификатор пользователя", example = "2")
                                   @PathVariable("user-id") Long userId);
 
 
@@ -123,6 +130,12 @@ public interface UsersApi {
                     })
     })
     @GetMapping("/{user-id}/events")
-    EventsDto getEventsOfUser(@Parameter(required = true, description = "Идентификатор пользователя", example = "2")
+    ResponseEntity<EventsDto> getEventsOfUser(@Parameter(required = true, description = "Идентификатор пользователя", example = "2")
                                   @PathVariable("user-id") Long userId);
+
+
+
+    @Operation(summary = "get all user", description = "for all")
+    @GetMapping
+    ResponseEntity<UsersDto> getAllUsers();
 }

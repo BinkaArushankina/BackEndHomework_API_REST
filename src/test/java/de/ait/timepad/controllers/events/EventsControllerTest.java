@@ -30,11 +30,6 @@ class EventsControllerTest {
     @Autowired
     private UsersRepository usersRepository;
 
-    @BeforeEach
-    public void setUp(){
-        eventsRepository.clear();
-        usersRepository.clear();
-    }
 
     @Nested
     @DisplayName("POST /api/events is works: ")

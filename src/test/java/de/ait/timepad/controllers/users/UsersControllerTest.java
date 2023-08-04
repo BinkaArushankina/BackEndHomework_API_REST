@@ -39,12 +39,6 @@ class UsersControllerTest {
     @Autowired
     private EventsRepository eventsRepository;
 
-    @BeforeEach
-    public void setUp() {
-        usersRepository.clear();
-        articlesRepository.clear();
-        eventsRepository.clear();
-    }
 
     @Nested
     @DisplayName("POST /api/users method is works: ")

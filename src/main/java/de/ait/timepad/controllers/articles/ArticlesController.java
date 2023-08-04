@@ -23,8 +23,5 @@ public class ArticlesController implements ArticlesApi {
                  .body(articlesService.addArticle(newArticle));
     }
 
-    @Override
-    public ArticlesDto getArticles(Integer year, Integer month, Integer day) {
-        return articlesService.getArticles(year, month, day);
-    }
+
 }

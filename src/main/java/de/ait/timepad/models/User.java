@@ -2,6 +2,7 @@ package de.ait.timepad.models;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -9,7 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(exclude = {"events", "articles"})
+@Entity
+@Table(name = "account")
 public class User {
+
 
     public enum Role {
         ADMIN,
@@ -24,6 +28,8 @@ public class User {
         DELETED
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -32,6 +38,9 @@ public class User {
     private Role role;
     private State state;
 
+    @OneToMany(mappedBy = "account")
     private List<Article> articles;
+
+    @OneToMany(mappedBy = "account")
     private List<Event> events;
 }

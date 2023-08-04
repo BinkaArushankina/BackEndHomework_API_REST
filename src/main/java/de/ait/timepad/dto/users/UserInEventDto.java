@@ -7,6 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +19,13 @@ import lombok.NoArgsConstructor;
 public class UserInEventDto {
 
     @Schema(description = "users id", example = "1")
+    @NotNull
     private Long id;
 
     @Schema(description = "users email", example = "user@mail.com")
+    @NotNull
+    @NotBlank
+    @Email
     private String email;
 
     public static UserInEventDto from (User user) {
