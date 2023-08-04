@@ -9,7 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = {"events", "articles"})
 @Entity
 @Table(name = "account")
 public class User {
@@ -35,12 +34,15 @@ public class User {
     private String email;
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Enumerated(value = EnumType.STRING)
     private State state;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "about")
     private List<Article> articles;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "about")
     private List<Event> events;
 }

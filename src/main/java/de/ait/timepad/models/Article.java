@@ -21,7 +21,7 @@ public class Article {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "about_id")
     private User about;
 
     private LocalDate publishDate;

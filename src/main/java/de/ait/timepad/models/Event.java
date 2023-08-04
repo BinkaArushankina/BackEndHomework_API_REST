@@ -38,7 +38,7 @@ public class Event {
     private EventType eventType;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "about_id")
     private User about;
 
     private LocalDate publishDate;
